@@ -17,7 +17,7 @@ message = case
           when d = 0
             x1 = -b / 2 * a
             "Discriminant: #{d}, x1: #{x1}"
-          when d < 0
+          else
             "There r no roots.."
           end
 
