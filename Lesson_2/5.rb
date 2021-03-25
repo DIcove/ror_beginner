@@ -13,4 +13,4 @@ leap_year = (year % 4).zero? && (year % 400).zero? && year % 100 != 0
 
 months[1] = 29 if leap_year
 
-p months[0...months[month - 1]].inject(:+) + day
+p months[0...months[month - 1]].sum + day

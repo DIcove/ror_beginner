@@ -12,9 +12,9 @@ loop do
   puts 'Please enter a quantity of the product...'
   quantity = gets.chomp.to_f
 
-  res[name.to_sym] = {price: price, quantity: quantity}
+  res[name.to_sym] = { price: price, quantity: quantity }
 end
 
-res.each{ |_, h| sum += h[:price] * h[:quantity] }
+res.each { |_, h| sum += h[:price] * h[:quantity] }
 p res
 p sum
