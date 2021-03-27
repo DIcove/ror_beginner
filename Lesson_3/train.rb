@@ -3,7 +3,7 @@
 # Train
 class Train
   STEP = 1
-  attr_accessor :speed, :route
+  attr_accessor :speed, :route, :index
   attr_reader :type, :wagons, :number
 
   def initialize(number, type, wagons)
@@ -23,11 +23,11 @@ class Train
   end
 
   def attach_wagon
-    speed.zero ? self.wagons += 1 : "can't attach wagons while moving..."
+    self.wagons += 1 if speed.zero?
   end
 
   def add_route(route)
-    return 'not a route...' unless route.instance_of?(Route)
+    return unless route.instance_of?(Route)
 
     self.route = route
     @index = 0
@@ -35,19 +35,21 @@ class Train
   end
 
   def previous_station
-    route.stations[@index - STEP]
+    return if index.zero?
+
+    route.stations[index - STEP]
   end
 
   def current_station
-    route.stations[@index]
+    route.stations[index]
   end
 
   def next_station
-    route.stations[@index + STEP]
+    route.stations[index + STEP]
   end
 
   def move_forward
-    return 'ur currently on the last available station...' if next_station.nil?
+    return unless next_station
 
     current_station.send(self)
     next_station.join(self)
@@ -55,7 +57,7 @@ class Train
   end
 
   def move_back
-    return 'ur currenlty on the first available station...' if previous_station.nil?
+    return unless previous_station
 
     current_station.send(self)
     previous_station.join(self)
