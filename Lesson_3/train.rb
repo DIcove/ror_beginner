@@ -11,7 +11,6 @@ class Train
     @type = type
     @wagons = wagons
     @speed = 0
-    @route = nil
   end
 
   def gain_speed
@@ -29,7 +28,7 @@ class Train
   def add_route(route)
     return unless route.instance_of?(Route)
 
-    self.route = route
+    @route = route
     @index = 0
     current_station.join(self)
   end
