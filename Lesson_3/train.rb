@@ -26,8 +26,6 @@ class Train
   end
 
   def add_route(route)
-    return unless route.instance_of?(Route)
-
     @route = route
     @index = 0
     current_station.join(self)

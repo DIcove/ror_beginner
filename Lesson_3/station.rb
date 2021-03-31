@@ -10,8 +10,6 @@ class Station
   end
 
   def join(train)
-    return unless train.instance_of?(Train)
-
     trains << train
   end
 
