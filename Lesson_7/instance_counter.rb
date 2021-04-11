@@ -27,7 +27,7 @@ end
 #   class << self
 #     attr_accessor :instances
 #   end
-  
+
 #   def initialize
 #     register_instance
 #   end

@@ -28,7 +28,9 @@ module Validatable
     end
 
     def name_inclusion_error
-      raise 'name should include at least one char' if name.split(' ').all? { |char| char =~ /[0-9]/ }
+      raise 'name should include at least one char' if name.split(' ').all? do |char|
+                                                         char =~ /[0-9]/
+                                                       end
     end
   end
 
@@ -41,7 +43,10 @@ module Validatable
     private
 
     def station_inclusion_error(first_station, last_station)
-      raise 'route can consist only out of stations' unless [first_station, last_station].all? { |station| station.instance_of?(Station) }
+      raise 'route can consist only out of stations' unless [first_station,
+                                                             last_station].all? do |station|
+                                                              station.instance_of?(Station)
+                                                            end
     end
   end
 
@@ -59,7 +64,9 @@ module Validatable
     end
 
     def number_format_error
-      raise 'invalid format of the number' unless number =~ /[a-z0-9]{3}-?[a-z0-9]{2}/
+      unless number =~ /[a-z0-9]{3}-?[a-z0-9]{2}/
+        raise 'invalid format of the number'
+      end
     end
   end
 end

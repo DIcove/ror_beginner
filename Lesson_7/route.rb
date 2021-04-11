@@ -32,7 +32,7 @@ class Route
     "#{first_station.name}-#{last_station.name}"
   end
 
-  private #потому, что юзеру нет необходимости в использовании этих методов, однако он нужны для выполнения публичных методов
+  private
 
   def first_station
     stations.first

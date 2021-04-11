@@ -4,6 +4,51 @@ require_relative 'requirable'
 
 # App
 class App
+  INTERFACE = %w[
+    Create\ station
+    Create\ train
+    Create\ route
+    Create\ wagon
+    Add\ station\ to\ route
+    Remove\ station\ from\ route
+    Assign\ route\ to\ train
+    Attach\ wagons\ to\ the\ train
+    Remove\ wagons\ from\ the\ train
+    Send\ train\ forward
+    Send\ train\ back
+    Show\ station\ list
+    Show\ trains\ on\ current_station
+    Show\ trains\ on\ all\ stations
+    Show\ wagons\ on\ all\ trains
+    Select\ current\ station
+    Select\ current\ train
+    Select\ current\ route
+    Select\ current\ wagon
+    Exit
+  ].freeze
+
+  OPERATIONS = {
+    1 => :create_station,
+    2 => :create_train,
+    3 => :create_route,
+    4 => :create_wagon,
+    5 => :add_station,
+    6 => :remove_station,
+    7 => :assign_route,
+    8 => :attach_wagon,
+    9 => :remove_wagon,
+    10 => :move_forward,
+    11 => :move_back,
+    12 => :show_stations,
+    13 => :trains_list,
+    14 => :trains_on_stations,
+    15 => :wagons_on_trains,
+    16 => :select_station,
+    17 => :select_train,
+    18 => :select_route,
+    19 => :select_wagon
+  }.freeze
+
   def initialize
     @stations = []
     @routes = []
@@ -13,28 +58,7 @@ class App
   end
 
   def show
-    %w[
-      Create\ station
-      Create\ train
-      Create\ route
-      Create\ wagon
-      Add\ station\ to\ route
-      Remove\ station\ from\ route
-      Assign\ route\ to\ train
-      Attach\ wagons\ to\ the\ train
-      Remove\ wagons\ from\ the\ train
-      Send\ train\ forward
-      Send\ train\ back
-      Show\ station\ list
-      Show\ trains\ on\ current_station
-      Show\ trains\ on\ all\ stations
-      Show\ wagons\ on\ all\ trains
-      Select\ current\ station
-      Select\ current\ train
-      Select\ current\ route
-      Select\ current\ wagon
-      Exit
-    ].each.with_index(STARTING_INDEX) { |item, i| puts "#{i}. #{item}" }
+    INTERFACE.each.with_index(STARTING_INDEX) { |item, i| puts "#{i}. #{item}" }
   end
 
   def interface
@@ -48,52 +72,57 @@ class App
   end
 
   def process_input(user_input)
-    case user_input
-    when 1
-      create_station
-    when 2
-      create_train
-    when 3
-      create_route
-    when 4
-      create_wagon
-    when 5
-      add_station
-    when 6
-      remove_station
-    when 7
-      assign_route
-    when 8
-      attach_wagon
-    when 9
-      remove_wagon
-    when 10
-      move_forward
-    when 11
-      move_back
-    when 12
-      show_stations
-    when 13
-      trains_list
-    when 14
-      trains_on_stations
-    when 15
-      wagons_on_trains
-    when 16
-      select_station
-    when 17
-      select_train
-    when 18
-      select_route
-    when 19
-      select_wagon
-    else
-      puts 'invalid input...'
-    end
+    # app = App.new
+    method = OPERATIONS[user_input.to_i]
+
+    @app.send(method) if method && app.respond_to?(method)
+
+    # OPERATIONS[user_input.to_i] || "invalid input..."
+    # when 1
+    #   create_station
+    # when 2
+    #   create_train
+    # when 3
+    #   create_route
+    # when 4
+    #   create_wagon
+    # when 5
+    #   add_station
+    # when 6
+    #   remove_station
+    # when 7
+    #   assign_route
+    # when 8
+    #   attach_wagon
+    # when 9
+    #   remove_wagon
+    # when 10
+    #   move_forward
+    # when 11
+    #   move_back
+    # when 12
+    #   show_stations
+    # when 13
+    #   trains_list
+    # when 14
+    #   trains_on_stations
+    # when 15
+    #   wagons_on_trains
+    # when 16
+    #   select_station
+    # when 17
+    #   select_train
+    # when 18
+    #   select_route
+    # when 19
+    #   select_wagon
+    # else
+    #   puts 'invalid input...'
+    # end
   end
 
   private
-  
+
   TYPE_LIST = %w[Cargo Passenger].freeze
   STARTING_INDEX = 1
 
@@ -175,65 +204,75 @@ class App
   end
 
   def add_station
-    return puts 'error' unless current_station || current_route
+    return puts "error" unless current_station || current_route
 
     current_route.add_station(current_station)
   end
 
   def remove_station
-    return puts 'error' unless current_route || current_station
+    return puts "error" unless current_route || current_station
 
     current_route.remove_station(current_station)
   end
 
   def assign_route
-    return puts 'error' unless current_train || current_route
+    return puts "error" unless current_train || current_route
 
     current_train.assign_route(current_route)
   end
 
   def attach_wagon
-    return puts 'error' unless current_train || current_wagon
+    return puts "error" unless current_train || current_wagon
 
     current_train.attach_wagon(current_wagon)
   end
 
   def remove_wagon
-    return puts 'error' unless current_train || current_wagon
+    return puts "error" unless current_train || current_wagon
 
     current_train.remove_wagon(current_wagon)
   end
 
   def move_forward
-    return puts 'error' unless current_train
+    return puts "error" unless current_train
 
     current_train.move_forward
   end
 
   def move_back
-    return puts 'error' unless current_train
+    return puts "error" unless current_train
 
     current_train.move_back
   end
 
   def show_wagons
-    wagons.each.with_index(STARTING_INDEX) { |w, i| puts w == current_wagon ? "=> #{i}. #{w.class}" : "   #{i}. #{w.class}" }
+    wagons.each.with_index(STARTING_INDEX) do |w, i|
+      puts w == current_wagon ? "=> #{i}. #{w.class}" : "   #{i}. #{w.class}"
+    end
   end
 
   def show_routes
-    routes.each.with_index(STARTING_INDEX) { |r, i| puts r == current_route ? "=> #{i}. #{r.name}" : "   #{i}. #{r.name}" }
+    routes.each.with_index(STARTING_INDEX) do |r, i|
+      puts r == current_route ? "=> #{i}. #{r.name}" : "   #{i}. #{r.name}"
+    end
   end
 
   def show_trains
-    trains.each.with_index(STARTING_INDEX) { |t, i| puts t == current_train ? "=> #{i}. #{t.class}: #{t.number}" : "   #{i}. #{t.class}: #{t.number}" }
+    trains.each.with_index(STARTING_INDEX) do |t, i|
+      puts t == current_train ? "=> #{i}. #{t.class}: #{t.number}" : "   #{i}. #{t.class}: #{t.number}"
+    end
   end
 
   def show_stations
-    stations.each.with_index(STARTING_INDEX) { |s, i| puts s == current_station ? "=> #{i}. #{s.name}" : "   #{i}. #{s.name}" }
+    stations.each.with_index(STARTING_INDEX) do |s, i|
+      puts s == current_station ? "=> #{i}. #{s.name}" : "   #{i}. #{s.name}"
+    end
   end
 
   def trains_list
-    current_station.trains.each.with_index(STARTING_INDEX) { |t, i| puts "#{i}. #{t.class}: #{t.number}" }
+    current_station.trains.each.with_index(STARTING_INDEX) do |t, i|
+      puts "#{i}. #{t.class}: #{t.number}"
+    end
   end
 
   def empty_message(obj)
@@ -280,20 +319,20 @@ class App
   end
 
   def trains_on_stations
-    str = ->(train) { puts "#{train.number}, #{train.class}, #{train.wagons.size}"}
+    str = lambda { |train|
+      puts "#{train.number}, #{train.class}, #{train.wagons.size}"
+    }
     stations.each { |station| station.trains_method(str) }
   end
 
   def wagons_on_trains
     # str = proc { |wagon| puts "0, #{wagon.class}, #{wagon.is_a?(PassengerWagon) ? wagon.seats : wagon.available_volume}, #{wagon.is_a?(PassengerWagon) ? wagon.taken_steats : wagon.taken_volume}" }
-    str = proc do |wagon| 
+    str = proc do |wagon|
       puts "0, #{wagon.class}, #{passenger?(wagon) ? wagon.seats : wagon.available_volume}, #{passenger?(wagon) ? wagon.taken_steats : wagon.taken_volume}"
     end
 
     trains.each { |train| train.wagons_method(str) }
   end
-
-  private
 
   def passenger?(wagon)
     wagon.is_a?(PassengerWagon)
@@ -301,19 +340,3 @@ class App
 end
 
 App.new
-
-Station.new('first staiton')
-Station.new('last station')
-p Station.all
-
-Train.new(12345)
-Train.new(67890)
-puts Train.find(12345)
-puts Train.find(67890)
-p Train.find(2314)
-
-50.times { print '-' }
-
-p Station.instances
-puts Route.instances
-

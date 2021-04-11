@@ -11,20 +11,24 @@ class Train
   include Validatable
   include Validatable::TrainValidation
 
-  @@trains = {}
+  @trains = {}
+
+  class << self
+    attr_reader trains
+  end
 
   def self.find(num)
-    @@trains[num]
+    trains[num]
   end
 
   attr_reader :type, :number, :speed, :wagons
 
   def initialize(number)
     @number = number
-    # validate!
+    validate!
     @speed = 0
     @wagons = []
-    @@trains[number] = self
+    trains[number] = self
     register_instance
   end
 
@@ -70,15 +74,16 @@ class Train
     self.index -= STEP
   end
 
-  def wagons_method(block)
-    wagons.each { |wagon| block.call(wagon) }
+  def wagons_method(_block, &block)
+    wagons.each(&block)
   end
 
-  private #потому что пиже приведенные методы не обязательны для юзера, однако важды для работы публичных методов
+  private
 
   STEP = 1
 
-  attr_accessor :speed, :route, :index
+  attr_writer :speed
+  attr_accessor :route, :index
 
   def previous_station
     return if index.zero?

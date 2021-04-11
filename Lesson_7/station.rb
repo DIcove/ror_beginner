@@ -9,7 +9,11 @@ class Station
   include Validatable
   include Validatable::StationValidation
 
-  @@stations = []
+  @stations = []
+
+  class << self
+    attr_reader :stations
+  end
 
   def self.all
     @@stations
