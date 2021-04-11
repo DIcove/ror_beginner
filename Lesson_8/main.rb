@@ -71,6 +71,7 @@ class App
     end
   end
 
+  # все же не понял, как можно реализовать идею с помощью метапрограммированая
   def process_input(user_input)
     # app = App.new
     method = OPERATIONS[user_input.to_i]
