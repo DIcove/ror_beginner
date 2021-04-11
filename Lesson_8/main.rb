@@ -71,55 +71,12 @@ class App
     end
   end
 
-  # все же не понял, как можно реализовать идею с помощью метапрограммированая
   def process_input(user_input)
-    # app = App.new
     method = OPERATIONS[user_input.to_i]
 
-    @app.send(method) if method && app.respond_to?(method)
+    return puts "invalid input" unless method
 
-    # OPERATIONS[user_input.to_i] || "invalid input..."
-    # when 1
-    #   create_station
-    # when 2
-    #   create_train
-    # when 3
-    #   create_route
-    # when 4
-    #   create_wagon
-    # when 5
-    #   add_station
-    # when 6
-    #   remove_station
-    # when 7
-    #   assign_route
-    # when 8
-    #   attach_wagon
-    # when 9
-    #   remove_wagon
-    # when 10
-    #   move_forward
-    # when 11
-    #   move_back
-    # when 12
-    #   show_stations
-    # when 13
-    #   trains_list
-    # when 14
-    #   trains_on_stations
-    # when 15
-    #   wagons_on_trains
-    # when 16
-    #   select_station
-    # when 17
-    #   select_train
-    # when 18
-    #   select_route
-    # when 19
-    #   select_wagon
-    # else
-    #   puts 'invalid input...'
-    # end
+    send(method)
   end
 
   private
@@ -327,7 +284,6 @@ class App
   end
 
   def wagons_on_trains
-    # str = proc { |wagon| puts "0, #{wagon.class}, #{wagon.is_a?(PassengerWagon) ? wagon.seats : wagon.available_volume}, #{wagon.is_a?(PassengerWagon) ? wagon.taken_steats : wagon.taken_volume}" }
     str = proc do |wagon|
       puts "0, #{wagon.class}, #{passenger?(wagon) ? wagon.seats : wagon.available_volume}, #{passenger?(wagon) ? wagon.taken_steats : wagon.taken_volume}"
     end

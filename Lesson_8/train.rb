@@ -14,7 +14,7 @@ class Train
   @trains = {}
 
   class << self
-    attr_reader trains
+    attr_reader :trains
   end
 
   def self.find(num)
@@ -28,7 +28,7 @@ class Train
     validate!
     @speed = 0
     @wagons = []
-    trains[number] = self
+    self.class.trains[number] = self
     register_instance
   end
 
