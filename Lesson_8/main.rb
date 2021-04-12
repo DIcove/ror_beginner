@@ -3,7 +3,7 @@
 require_relative 'requirable'
 
 # App
-class App
+class App # rubocop:todo Metrics/ClassLength
   include Interface
 
   OPERATIONS = {
@@ -104,7 +104,7 @@ class App
     CargoWagon.new(volume)
   end
 
-  def create_train
+  def create_train # rubocop:todo Metrics/MethodLength
     puts "Please enter train's number"
     number = gets.chomp.to_i
 
