@@ -4,28 +4,7 @@ require_relative 'requirable'
 
 # App
 class App
-  INTERFACE = %w[
-    Create\ station
-    Create\ train
-    Create\ route
-    Create\ wagon
-    Add\ station\ to\ route
-    Remove\ station\ from\ route
-    Assign\ route\ to\ train
-    Attach\ wagons\ to\ the\ train
-    Remove\ wagons\ from\ the\ train
-    Send\ train\ forward
-    Send\ train\ back
-    Show\ station\ list
-    Show\ trains\ on\ current_station
-    Show\ trains\ on\ all\ stations
-    Show\ wagons\ on\ all\ trains
-    Select\ current\ station
-    Select\ current\ train
-    Select\ current\ route
-    Select\ current\ wagon
-    Exit
-  ].freeze
+  include Interface
 
   OPERATIONS = {
     1 => :create_station,
@@ -59,16 +38,6 @@ class App
 
   def show
     INTERFACE.each.with_index(STARTING_INDEX) { |item, i| puts "#{i}. #{item}" }
-  end
-
-  def interface
-    loop do
-      show
-      users_input = gets.chomp.to_i
-      break if users_input == 20
-
-      process_input(users_input)
-    end
   end
 
   def process_input(user_input)
@@ -143,7 +112,12 @@ class App
     type = select_type
 
     begin
-      train = type == 'Cargo' ? CargoTrain.new(number) : PassengerTrain.new(number)
+      train =
+        if type == 'Cargo'
+          CargoTrain.new(number)
+        else
+          PassengerTrain.new(number)
+        end
     rescue RuntimeError => e
       return puts e
     end
@@ -217,7 +191,11 @@ class App
 
   def show_trains
     trains.each.with_index(STARTING_INDEX) do |t, i|
-      puts t == current_train ? "=> #{i}. #{t.class}: #{t.number}" : "   #{i}. #{t.class}: #{t.number}"
+      if t == current_train
+        puts "=> #{i}. #{t.class}: #{t.number}"
+      else
+        puts "   #{i}. #{t.class}: #{t.number}"
+      end
     end
   end
 
@@ -285,7 +263,12 @@ class App
 
   def wagons_on_trains
     str = proc do |wagon|
-      puts "0, #{wagon.class}, #{passenger?(wagon) ? wagon.seats : wagon.available_volume}, #{passenger?(wagon) ? wagon.taken_steats : wagon.taken_volume}"
+      str = if wagon.passenger?(wagon)
+              "#{wagon.seats}, #{wagon.taken_seats}"
+            else
+              "#{wagon.available_volume}, #{wagon.taken_volume}"
+            end
+      print "0, #{wagon.class}, #{str}"
     end
 
     trains.each { |train| train.wagons_method(str) }

@@ -1,16 +1,18 @@
 # frozen_string_literal: true
 
+# Instance counter
 module InstanceCounter
   def self.included(base)
     base.extend ClassMethods
     base.include InstanceMethods
   end
 
+  # class methods
   module ClassMethods
-    @@instances = 0
     attr_accessor :instances
   end
 
+  # instance methods
   module InstanceMethods
     private
 
@@ -20,19 +22,3 @@ module InstanceCounter
     end
   end
 end
-
-# class Car
-#   @instances = 0
-
-#   class << self
-#     attr_accessor :instances
-#   end
-
-#   def initialize
-#     register_instance
-#   end
-
-#   def register_instance
-#     self.class.instances += 1
-#   end
-# end

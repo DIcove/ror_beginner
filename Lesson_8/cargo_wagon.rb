@@ -9,6 +9,8 @@ class CargoWagon < Wagon
   def initialize(available_volume)
     @available_volume = available_volume
     @taken_volume = 0
+
+    super
   end
 
   def take_volume(volume)

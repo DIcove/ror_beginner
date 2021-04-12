@@ -9,6 +9,7 @@ class PassengerWagon < Wagon
   def initialize(seats)
     @seats = seats
     @taken_seats = 0
+    super
   end
 
   def take_seat
