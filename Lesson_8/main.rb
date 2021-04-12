@@ -43,7 +43,7 @@ class App # rubocop:todo Metrics/ClassLength
   def process_input(user_input)
     method = OPERATIONS[user_input.to_i]
 
-    return puts "invalid input" unless method
+    return puts 'invalid input' unless method
 
     send(method)
   end
@@ -136,43 +136,43 @@ class App # rubocop:todo Metrics/ClassLength
   end
 
   def add_station
-    return puts "error" unless current_station || current_route
+    return puts 'error' unless current_station || current_route
 
     current_route.add_station(current_station)
   end
 
   def remove_station
-    return puts "error" unless current_route || current_station
+    return puts 'error' unless current_route || current_station
 
     current_route.remove_station(current_station)
   end
 
   def assign_route
-    return puts "error" unless current_train || current_route
+    return puts 'error' unless current_train || current_route
 
     current_train.assign_route(current_route)
   end
 
   def attach_wagon
-    return puts "error" unless current_train || current_wagon
+    return puts 'error' unless current_train || current_wagon
 
     current_train.attach_wagon(current_wagon)
   end
 
   def remove_wagon
-    return puts "error" unless current_train || current_wagon
+    return puts 'error' unless current_train || current_wagon
 
     current_train.remove_wagon(current_wagon)
   end
 
   def move_forward
-    return puts "error" unless current_train
+    return puts 'error' unless current_train
 
     current_train.move_forward
   end
 
   def move_back
-    return puts "error" unless current_train
+    return puts 'error' unless current_train
 
     current_train.move_back
   end
