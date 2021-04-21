@@ -9,15 +9,18 @@ module InstanceCounter
 
   # class methods
   module ClassMethods
-    attr_accessor :instances
+    attr_writer :instances
+
+    def instances
+      @instances ||= 0
+    end
   end
 
   # instance methods
   module InstanceMethods
-    private
+    protected
 
     def register_instance
-      self.class.instances ||= 0
       self.class.instances += 1
     end
   end

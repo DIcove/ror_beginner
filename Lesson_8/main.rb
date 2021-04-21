@@ -245,7 +245,7 @@ class App # rubocop:todo Metrics/ClassLength
   end
 
   def select_wagon
-    return puts empty_message('wagon') if wagons.empty?
+    return puts empty_message('wagon') if wagons.emptyj?
 
     puts 'Please select wagon as a default one:'
     show_wagons
